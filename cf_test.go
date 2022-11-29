@@ -1,4 +1,4 @@
-package lotusdb
+package egoDB
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -10,8 +10,8 @@ import (
 	"time"
 )
 
-func TestLotusDB_OpenColumnFamily(t *testing.T) {
-	path, err := filepath.Abs(filepath.Join("/tmp", "lotusdb-opencf"))
+func TestegoDB_OpenColumnFamily(t *testing.T) {
+	path, err := filepath.Abs(filepath.Join("/tmp", "egoDB-opencf"))
 	assert.Nil(t, err)
 	opts := DefaultOptions(path)
 	db, err := Open(opts)
@@ -31,7 +31,7 @@ func TestLotusDB_OpenColumnFamily(t *testing.T) {
 
 	t.Run("spec-dir", func(t *testing.T) {
 		cfopt := DefaultColumnFamilyOptions("cf-2")
-		dir, _ := ioutil.TempDir("", "lotusdb-opencf2")
+		dir, _ := ioutil.TempDir("", "egoDB-opencf2")
 		defer func() {
 			_ = os.RemoveAll(dir)
 		}()
@@ -41,7 +41,7 @@ func TestLotusDB_OpenColumnFamily(t *testing.T) {
 
 	t.Run("spec-val-dir", func(t *testing.T) {
 		cfopt := DefaultColumnFamilyOptions("cf-1")
-		dir, _ := ioutil.TempDir("", "lotusdb")
+		dir, _ := ioutil.TempDir("", "egoDB")
 		valDir, _ := ioutil.TempDir("", "lotus-val")
 		defer func() {
 			_ = os.RemoveAll(dir)
@@ -55,7 +55,7 @@ func TestLotusDB_OpenColumnFamily(t *testing.T) {
 }
 
 func TestColumnFamily_Put(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	db, err := Open(opts)
 	assert.Nil(t, err)
 	defer destroyDB(db)
@@ -103,7 +103,7 @@ func TestColumnFamily_Put(t *testing.T) {
 }
 
 func TestColumnFamily_PutWithOptions(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	db, err := Open(opts)
 	assert.Nil(t, err)
 	defer destroyDB(db)
@@ -149,7 +149,7 @@ func TestColumnFamily_PutWithOptions(t *testing.T) {
 }
 
 func TestColumnFamily_Get(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	db, err := Open(opts)
 	assert.Nil(t, err)
 	defer destroyDB(db)
@@ -161,7 +161,7 @@ func TestColumnFamily_Get(t *testing.T) {
 	for i := 0; i < 100; i++ {
 		err := db.Put(GetKey(i), GetValue16B())
 		if i == 43 {
-			err := cf.Put(GetKey(i), []byte("lotusdb"))
+			err := cf.Put(GetKey(i), []byte("egoDB"))
 			assert.Nil(t, err)
 		}
 		assert.Nil(t, err)
@@ -206,7 +206,7 @@ func TestColumnFamily_Get(t *testing.T) {
 }
 
 func TestColumnFamily_Stat(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	db, err := Open(opts)
 	assert.Nil(t, err)
 	defer destroyDB(db)
@@ -226,7 +226,7 @@ func TestColumnFamily_Stat(t *testing.T) {
 }
 
 func TestColumnFamily_IsClosed(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	db, err := Open(opts)
 	assert.Nil(t, err)
 	defer destroyDB(db)
@@ -245,7 +245,7 @@ func TestColumnFamily_IsClosed(t *testing.T) {
 }
 
 func TestColumnFamily_Sync(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	db, err := Open(opts)
 	assert.Nil(t, err)
 	defer destroyDB(db)
@@ -263,7 +263,7 @@ func TestColumnFamily_Sync(t *testing.T) {
 }
 
 func TestColumnFamily_Options(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	db, err := Open(opts)
 	assert.Nil(t, err)
 	defer destroyDB(db)

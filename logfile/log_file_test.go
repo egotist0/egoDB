@@ -101,7 +101,7 @@ func testLogFileWrite(t *testing.T, ioType IOType) {
 			"no-value", fields{lf: lf}, args{buf: []byte{}}, false,
 		},
 		{
-			"normal-1", fields{lf: lf}, args{buf: []byte("lotusdb")}, false,
+			"normal-1", fields{lf: lf}, args{buf: []byte("egoDB")}, false,
 		},
 		{
 			"normal-2", fields{lf: lf}, args{buf: []byte("some data")}, false,
@@ -141,7 +141,7 @@ func testLogFileRead(t *testing.T, ioType IOType) {
 		[]byte("some data 1"),
 		[]byte("some data 2"),
 		[]byte("some data 3"),
-		[]byte("lotusdb"),
+		[]byte("egoDB"),
 	}
 	offset := writeSomeData(lf, data)
 
@@ -230,8 +230,8 @@ func testLogFileReadLogEntry(t *testing.T, ioType IOType) {
 		{ExpiredAt: 123332, Type: TypeDelete},
 		{Key: []byte(""), Value: []byte(""), ExpiredAt: 994332343, Type: TypeDelete},
 		{Key: []byte("k1"), Value: nil, ExpiredAt: 7844332343},
-		{Key: nil, Value: []byte("lotusdb"), ExpiredAt: 99400542343},
-		{Key: []byte("k2"), Value: []byte("lotusdb"), ExpiredAt: 8847333912},
+		{Key: nil, Value: []byte("egoDB"), ExpiredAt: 99400542343},
+		{Key: []byte("k2"), Value: []byte("egoDB"), ExpiredAt: 8847333912},
 		{Key: []byte("k3"), Value: []byte("some data"), ExpiredAt: 8847333912, Type: TypeDelete},
 	}
 	var vals [][]byte
@@ -268,7 +268,7 @@ func testLogFileReadLogEntry(t *testing.T, ioType IOType) {
 			"read-entry-0", fields{lf: lf}, args{offset: offsets[3]}, &LogEntry{Key: []byte("k1"), Value: []byte{}, ExpiredAt: 7844332343}, int64(len(vals[3])), false,
 		},
 		{
-			"read-entry-0", fields{lf: lf}, args{offset: offsets[4]}, &LogEntry{Key: []byte{}, Value: []byte("lotusdb"), ExpiredAt: 99400542343}, int64(len(vals[4])), false,
+			"read-entry-0", fields{lf: lf}, args{offset: offsets[4]}, &LogEntry{Key: []byte{}, Value: []byte("egoDB"), ExpiredAt: 99400542343}, int64(len(vals[4])), false,
 		},
 		{
 			"read-entry-0", fields{lf: lf}, args{offset: offsets[5]}, entries[5], int64(len(vals[5])), false,

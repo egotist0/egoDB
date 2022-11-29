@@ -46,7 +46,7 @@ package arenaskl
 import (
 	"bytes"
 	"errors"
-	"github.com/flower-corp/lotusdb/util"
+	"github.com/egotist0/egoDB/util"
 	"math"
 	"sync/atomic"
 	"unsafe"

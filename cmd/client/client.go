@@ -11,7 +11,7 @@ import (
 	"github.com/peterh/liner"
 )
 
-const cmdHistoryPath = "/tmp/lotusdb-cli"
+const cmdHistoryPath = "/tmp/egoDB-cli"
 
 // all supported commands.
 var commandList = [][]string{
@@ -26,7 +26,7 @@ var helpList = map[string]string{
 	"PUT":    "PUT key value  summary: Set the string value of a key",
 	"GET":    "GET key        summary: Get the value of a key",
 	"DELETE": "DELETE key     summary: Delete the key",
-	"HELP":   "HELP           summary: To get help about LotusDB client commands",
+	"HELP":   "HELP           summary: To get help about egoDB client commands",
 }
 
 var commandSet map[string]bool

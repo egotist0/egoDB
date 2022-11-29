@@ -1,10 +1,10 @@
-package lotusdb
+package egoDB
 
 import (
 	"encoding/binary"
-	"github.com/flower-corp/lotusdb/arenaskl"
-	"github.com/flower-corp/lotusdb/logfile"
-	"github.com/flower-corp/lotusdb/logger"
+	"github.com/egotist0/egoDB/arenaskl"
+	"github.com/egotist0/egoDB/logfile"
+	"github.com/egotist0/egoDB/logger"
 	"io"
 	"sync"
 	"sync/atomic"

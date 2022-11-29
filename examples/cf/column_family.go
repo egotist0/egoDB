@@ -1,16 +1,16 @@
 package main
 
 import (
-	"github.com/flower-corp/lotusdb"
+	"github.com/egotist0/egoDB"
 	"io/ioutil"
 )
 
 func main() {
 	// open a db with default options.
-	path, _ := ioutil.TempDir("", "lotusdb")
+	path, _ := ioutil.TempDir("", "egoDB")
 	// you must specify a db path.
-	opts := lotusdb.DefaultOptions(path)
-	db, err := lotusdb.Open(opts)
+	opts := egoDB.DefaultOptions(path)
+	db, err := egoDB.Open(opts)
 	defer func() {
 		_ = db.Close()
 	}()
@@ -18,7 +18,7 @@ func main() {
 		panic(err)
 	}
 
-	cfOpts := lotusdb.DefaultColumnFamilyOptions("a-new-cf")
+	cfOpts := egoDB.DefaultColumnFamilyOptions("a-new-cf")
 	cfOpts.DirPath = "/tmp"
 	cf, err := db.OpenColumnFamily(cfOpts)
 	if err != nil {
@@ -26,7 +26,7 @@ func main() {
 	}
 
 	// the same with db.Put
-	err = cf.Put([]byte("name"), []byte("LotusDB"))
+	err = cf.Put([]byte("name"), []byte("egoDB"))
 	if err != nil {
 		// ...
 	}

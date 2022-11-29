@@ -3,8 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/flower-corp/lotusdb"
-	"github.com/flower-corp/lotusdb/logger"
+	"github.com/egotist0/egoDB"
+	"github.com/egotist0/egoDB/logger"
 	"io/ioutil"
 	"log"
 	"net"
@@ -24,7 +24,7 @@ const (
 	DELETE = "DELETE"
 )
 
-var db *lotusdb.LotusDB
+var db *egoDB.egoDB
 
 var (
 	// ErrArgsNumNotMatch number of args not match.
@@ -35,8 +35,8 @@ var (
 
 func init() {
 	var err error
-	options := lotusdb.DefaultOptions("/tmp/lotusdb")
-	db, err = lotusdb.Open(options)
+	options := egoDB.DefaultOptions("/tmp/egoDB")
+	db, err = egoDB.Open(options)
 	if err != nil {
 		panic(err)
 	}
@@ -49,7 +49,7 @@ func main() {
 		panic(err)
 	}
 
-	logger.Info("lotusdb server is running")
+	logger.Info("egoDB server is running")
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, os.Interrupt, os.Kill, syscall.SIGHUP,
 		syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)

@@ -4,7 +4,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/flower-corp/lotusdb/mmap"
+	"github.com/egotist0/egoDB/mmap"
 )
 
 // MMapSelector represents using memory-mapped file I/O.

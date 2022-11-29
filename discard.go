@@ -1,4 +1,4 @@
-package lotusdb
+package egoDB
 
 import (
 	"encoding/binary"
@@ -8,10 +8,10 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/flower-corp/lotusdb/index"
-	"github.com/flower-corp/lotusdb/ioselector"
-	"github.com/flower-corp/lotusdb/logfile"
-	"github.com/flower-corp/lotusdb/logger"
+	"github.com/egotist0/egoDB/index"
+	"github.com/egotist0/egoDB/ioselector"
+	"github.com/egotist0/egoDB/logfile"
+	"github.com/egotist0/egoDB/logger"
 )
 
 const discardRecordSize = 12

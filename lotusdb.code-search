@@ -1,0 +1,551 @@
+# Query: lotusdb
+# ContextLines: 1
+
+157 个结果 - 31 文件
+
+src/egoDB/.gitignore:
+  1  .idea/
+  2: egoDB.iml
+  3  .DS_Store
+
+src/egoDB/cf_test.go:
+    1: package egoDB
+    2  
+
+   12  
+   13: func TestegoDB_OpenColumnFamily(t *testing.T) {
+   14: 	path, err := filepath.Abs(filepath.Join("/tmp", "egoDB-opencf"))
+   15  	assert.Nil(t, err)
+
+   33  		cfopt := DefaultColumnFamilyOptions("cf-2")
+   34: 		dir, _ := ioutil.TempDir("", "egoDB-opencf2")
+   35  		defer func() {
+
+   43  		cfopt := DefaultColumnFamilyOptions("cf-1")
+   44: 		dir, _ := ioutil.TempDir("", "egoDB")
+   45  		valDir, _ := ioutil.TempDir("", "lotus-val")
+
+   57  func TestColumnFamily_Put(t *testing.T) {
+   58: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+   59  	db, err := Open(opts)
+
+  105  func TestColumnFamily_PutWithOptions(t *testing.T) {
+  106: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+  107  	db, err := Open(opts)
+
+  151  func TestColumnFamily_Get(t *testing.T) {
+  152: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+  153  	db, err := Open(opts)
+
+  163  		if i == 43 {
+  164: 			err := cf.Put(GetKey(i), []byte("egoDB"))
+  165  			assert.Nil(t, err)
+
+  208  func TestColumnFamily_Stat(t *testing.T) {
+  209: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+  210  	db, err := Open(opts)
+
+  228  func TestColumnFamily_IsClosed(t *testing.T) {
+  229: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+  230  	db, err := Open(opts)
+
+  247  func TestColumnFamily_Sync(t *testing.T) {
+  248: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+  249  	db, err := Open(opts)
+
+  265  func TestColumnFamily_Options(t *testing.T) {
+  266: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+  267  	db, err := Open(opts)
+
+src/egoDB/cf.go:
+   1: package egoDB
+   2  
+
+   5  	"fmt"
+   6: 	"github.com/flower-corp/egoDB/flock"
+   7  	"io/ioutil"
+
+  16  
+  17: 	"github.com/flower-corp/egoDB/index"
+  18: 	"github.com/flower-corp/egoDB/logfile"
+  19: 	"github.com/flower-corp/egoDB/util"
+  20  )
+
+  36  // ColumnFamily is a namespace of keys and values.
+  37: // Each key/value pair in egoDB is associated with exactly one Column Family.
+  38  // If no Column Family is specified, key-value pair is associated with Column Family "cf_default".
+
+  69  // OpenColumnFamily open a new or existed column family.
+  70: func (db *egoDB) OpenColumnFamily(opts ColumnFamilyOptions) (*ColumnFamily, error) {
+  71  	if opts.CfName == "" {
+
+src/egoDB/db_test.go:
+    1: package egoDB
+    2  
+
+    5  	"fmt"
+    6: 	"github.com/flower-corp/egoDB/logger"
+    7  	"math/rand"
+
+   22  
+   23: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+   24  	t.Run("default", func(t *testing.T) {
+
+   41  
+   42: func TestegoDB_Put(t *testing.T) {
+   43: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+   44  	db, err := Open(opts)
+
+   48  	type fields struct {
+   49: 		db *egoDB
+   50  	}
+
+   85  
+   86: func TestegoDB_PutWithOptions(t *testing.T) {
+   87: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+   88  	db, err := Open(opts)
+
+   92  	type fields struct {
+   93: 		db *egoDB
+   94  	}
+
+  130  // Then a new active memtable will be created.
+  131: func TestegoDB_PutUntilMemtableFlush(t *testing.T) {
+  132: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+  133  	// if you change the default memtable size, change the writeCount too.
+
+  154  
+  155: func TestegoDB_Get(t *testing.T) {
+  156: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+  157  	db, err := Open(opts)
+
+  164  		if i == 43 {
+  165: 			err := db.Put(GetKey(i), []byte("egoDB"))
+  166  			assert.Nil(t, err)
+
+  171  	type fields struct {
+  172: 		db *egoDB
+  173  	}
+
+  208  
+  209: func TestegoDB_GetKeyFromIndexerAndValFromVLog(t *testing.T) {
+  210  	testGetKV(t)
+
+  213  func testGetKV(t *testing.T) {
+  214: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+  215  	db, err := Open(opts)
+
+  239  
+  240: func TestegoDB_Delete(t *testing.T) {
+  241: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+  242  	db, err := Open(opts)
+
+  250  		if i == 32 {
+  251: 			err := db.Put(GetKey(i), []byte("egoDB"))
+  252  			assert.Nil(t, err)
+
+  257  	type fields struct {
+  258: 		db *egoDB
+  259  	}
+
+  300  
+  301: func TestegoDB_DeleteAfterFlush(t *testing.T) {
+  302: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+  303  	db, err := Open(opts)
+
+  311  		if i == 32 {
+  312: 			err := db.Put(GetKey(i), []byte("egoDB"))
+  313  			assert.Nil(t, err)
+
+  318  	type fields struct {
+  319: 		db *egoDB
+  320  	}
+
+  354  
+  355: func TestegoDB_SyncAndClose(t *testing.T) {
+  356: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+  357  	db, err := Open(opts)
+
+  375  func TestReOpenDB(t *testing.T) {
+  376: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+  377  	db, err := Open(opts)
+
+  405  func TestBytesFlush(t *testing.T) {
+  406: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+  407  	opts.CfOpts.WalBytesFlush = 200
+
+  417  
+  418: func destroyDB(db *egoDB) {
+  419  	if db != nil {
+
+src/egoDB/db.go:
+    1: package egoDB
+    2  
+
+    7  
+    8: 	"github.com/flower-corp/egoDB/util"
+    9  )
+
+   15  
+   16: // egoDB provide basic operations for a persistent kv store.
+   17  // It`s methods(Put Get Delete) are self explanatory, and executed in default ColumnFamily.
+   18  // You can create a custom ColumnFamily by calling method OpenColumnFamily.
+   19: type egoDB struct {
+   20  	// all column families.
+
+   25  
+   26: // Open a new egoDB instance, actually will just open the default column family.
+   27: func Open(opt Options) (*egoDB, error) {
+   28  	if !util.PathExist(opt.DBPath) {
+
+   33  
+   34: 	db := &egoDB{opts: opt, cfs: make(map[string]*ColumnFamily)}
+   35  	// load default column family.
+
+   45  // Close close database.
+   46: func (db *egoDB) Close() error {
+   47  	for _, cf := range db.cfs {
+
+   55  // Sync syncs the content of all column families to disk.
+   56: func (db *egoDB) Sync() error {
+   57  	for _, cf := range db.cfs {
+
+   65  // Put put to default column family.
+   66: func (db *egoDB) Put(key, value []byte) error {
+   67  	return db.PutWithOptions(key, value, nil)
+
+   70  // PutWithOptions put to default column family with options.
+   71: func (db *egoDB) PutWithOptions(key, value []byte, opt *WriteOptions) error {
+   72  	columnFamily := db.getColumnFamily(DefaultColumnFamilyName)
+
+   79  // Get get from default column family.
+   80: func (db *egoDB) Get(key []byte) ([]byte, error) {
+   81  	columnFamily := db.getColumnFamily(DefaultColumnFamilyName)
+
+   88  // Delete delete from default column family.
+   89: func (db *egoDB) Delete(key []byte) error {
+   90  	return db.DeleteWithOptions(key, nil)
+
+   93  // DeleteWithOptions delete from default column family with options.
+   94: func (db *egoDB) DeleteWithOptions(key []byte, opt *WriteOptions) error {
+   95  	columnFamily := db.getColumnFamily(DefaultColumnFamilyName)
+
+  101  
+  102: func (db *egoDB) getColumnFamily(cfName string) *ColumnFamily {
+  103  	db.mu.RLock()
+
+src/egoDB/discard_test.go:
+    1: package egoDB
+    2  
+
+   10  func TestDiscard_listenUpdates(t *testing.T) {
+   11: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+   12  	db, err := Open(opts)
+
+   46  	t.Run("init", func(t *testing.T) {
+   47: 		path := filepath.Join("/tmp", "egoDB-discard")
+   48  		os.MkdirAll(path, os.ModePerm)
+
+   57  	t.Run("with-data", func(t *testing.T) {
+   58: 		path := filepath.Join("/tmp", "egoDB-discard")
+   59  		os.MkdirAll(path, os.ModePerm)
+
+   80  func TestDiscard_setTotal(t *testing.T) {
+   81: 	path := filepath.Join("/tmp", "egoDB-discard")
+   82  	os.MkdirAll(path, os.ModePerm)
+
+  116  func TestDiscard_clear(t *testing.T) {
+  117: 	path := filepath.Join("/tmp", "egoDB-discard")
+  118  	os.MkdirAll(path, os.ModePerm)
+
+  156  func TestDiscard_incrDiscard(t *testing.T) {
+  157: 	path := filepath.Join("/tmp", "egoDB-discard")
+  158  	os.MkdirAll(path, os.ModePerm)
+
+  175  func TestDiscard_getCCL(t *testing.T) {
+  176: 	path := filepath.Join("/tmp", "egoDB-discard")
+  177  	os.MkdirAll(path, os.ModePerm)
+
+src/egoDB/discard.go:
+   1: package egoDB
+   2  
+
+  10  
+  11: 	"github.com/flower-corp/egoDB/index"
+  12: 	"github.com/flower-corp/egoDB/ioselector"
+  13: 	"github.com/flower-corp/egoDB/logfile"
+  14: 	"github.com/flower-corp/egoDB/logger"
+  15  )
+
+src/egoDB/flush.go:
+   1: package egoDB
+   2  
+
+   8  
+   9: 	"github.com/flower-corp/egoDB/index"
+  10: 	"github.com/flower-corp/egoDB/logfile"
+  11: 	"github.com/flower-corp/egoDB/logger"
+  12  )
+
+src/egoDB/go.mod:
+  1: module github.com/flower-corp/egoDB
+  2  
+
+src/egoDB/memtable.go:
+  1: package egoDB
+  2  
+
+  4  	"encoding/binary"
+  5: 	"github.com/flower-corp/egoDB/arenaskl"
+  6: 	"github.com/flower-corp/egoDB/logfile"
+  7: 	"github.com/flower-corp/egoDB/logger"
+  8  	"io"
+
+src/egoDB/options.go:
+   1: package egoDB
+   2  
+
+  14  
+  15: // DefaultOptions default options for opening a egoDB.
+  16  func DefaultOptions(path string) Options {
+
+src/egoDB/vlog_test.go:
+    1: package egoDB
+    2  
+
+    4  	"bytes"
+    5: 	"github.com/flower-corp/egoDB/logfile"
+    6  	"github.com/stretchr/testify/assert"
+
+  136  		{
+  137: 			"no-key", fields{vlog: vlog}, args{e: &logfile.LogEntry{Value: []byte("egoDB")}}, &valuePos{Fid: 0, Offset: 0}, false,
+  138  		},
+
+  142  		{
+  143: 			"with-key-value", fields{vlog: vlog}, args{e: &logfile.LogEntry{Key: []byte("key2"), Value: []byte("egoDB-2")}}, &valuePos{Fid: 0, Offset: 27}, false,
+  144  		},
+
+  423  func TestValueLog_Compaction_Normal(t *testing.T) {
+  424: 	opts := DefaultOptions("/tmp" + separator + "egoDB")
+  425  	opts.CfOpts.ValueLogFileSize = 16 * 1024 * 1024
+
+  464  func testCompacction(t *testing.T, reading, writing bool) {
+  465: 	path, _ := ioutil.TempDir("", "egoDB")
+  466  	opts := DefaultOptions(path)
+
+src/egoDB/vlog.go:
+  1: package egoDB
+  2  
+
+  5  	"fmt"
+  6: 	"github.com/flower-corp/egoDB/index"
+  7: 	"github.com/flower-corp/egoDB/logfile"
+  8: 	"github.com/flower-corp/egoDB/logger"
+  9  	"io"
+
+src/egoDB/.github/ISSUE_TEMPLATE/bug_report.md:
+  25  - operating system
+  26: - egoDB version
+
+src/egoDB/arenaskl/skl.go:
+  48  	"errors"
+  49: 	"github.com/flower-corp/egoDB/util"
+  50  	"math"
+
+src/egoDB/cmd/client/client.go:
+  13  
+  14: const cmdHistoryPath = "/tmp/egoDB-cli"
+  15  
+
+  28  	"DELETE": "DELETE key     summary: Delete the key",
+  29: 	"HELP":   "HELP           summary: To get help about egoDB client commands",
+  30  }
+
+src/egoDB/cmd/server/server.go:
+   5  	"fmt"
+   6: 	"github.com/flower-corp/egoDB"
+   7: 	"github.com/flower-corp/egoDB/logger"
+   8  	"io/ioutil"
+
+  26  
+  27: var db *egoDB.egoDB
+  28  
+
+  37  	var err error
+  38: 	options := egoDB.DefaultOptions("/tmp/egoDB")
+  39: 	db, err = egoDB.Open(options)
+  40  	if err != nil {
+
+  51  
+  52: 	logger.Info("egoDB server is running")
+  53  	sig := make(chan os.Signal, 1)
+
+src/egoDB/examples/basic/basic_operation.go:
+   3  import (
+   4: 	"github.com/flower-corp/egoDB"
+   5  	"io/ioutil"
+
+   8  
+   9: // basic operations for egoDB:
+  10  // put
+
+  15  func main() {
+  16: 	path, _ := ioutil.TempDir("", "egoDB")
+  17: 	opts := egoDB.DefaultOptions(path)
+  18: 	db, err := egoDB.Open(opts)
+  19  	if err != nil {
+
+  25  	key1 := []byte("name")
+  26: 	err = db.Put(key1, []byte("egoDB"))
+  27  	if err != nil {
+
+  32  	// 2.----put with options----
+  33: 	writeOpts := &egoDB.WriteOptions{
+  34  		Sync:      true,
+
+  57  	// 5.----delete with options----
+  58: 	deleteOpts := &egoDB.WriteOptions{
+  59  		Sync:       false,
+
+src/egoDB/examples/cf/column_family.go:
+   3  import (
+   4: 	"github.com/flower-corp/egoDB"
+   5  	"io/ioutil"
+
+   9  	// open a db with default options.
+  10: 	path, _ := ioutil.TempDir("", "egoDB")
+  11  	// you must specify a db path.
+  12: 	opts := egoDB.DefaultOptions(path)
+  13: 	db, err := egoDB.Open(opts)
+  14  	defer func() {
+
+  20  
+  21: 	cfOpts := egoDB.DefaultColumnFamilyOptions("a-new-cf")
+  22  	cfOpts.DirPath = "/tmp"
+
+  28  	// the same with db.Put
+  29: 	err = cf.Put([]byte("name"), []byte("egoDB"))
+  30  	if err != nil {
+
+src/egoDB/examples/open/open_db.go:
+   3  import (
+   4: 	"github.com/flower-corp/egoDB"
+   5  	"io/ioutil"
+
+  10  	// open a db with default options.
+  11: 	path, _ := ioutil.TempDir("", "egoDB")
+  12  	// you must specify a db path.
+  13: 	opts := egoDB.DefaultOptions(path)
+  14: 	db, err := egoDB.Open(opts)
+  15  	defer func() {
+
+src/egoDB/index/bptree.go:
+  3  import (
+  4: 	"github.com/flower-corp/egoDB/logger"
+  5  	"strings"
+
+src/egoDB/index/indexer_test.go:
+  29  		{
+  30: 			"many", args{m: &IndexerMeta{Value: []byte("egoDB"), Fid: 0, Offset: 0, EntrySize: 169}}, []byte{0, 0, 210, 2, 108, 111, 116, 117, 115, 100, 98},
+  31  		},
+
+  60  		{
+  61: 			"many", args{buf: []byte{0, 0, 210, 2, 108, 111, 116, 117, 115, 100, 98}}, &IndexerMeta{Value: []byte("egoDB"), Fid: 0, Offset: 0, EntrySize: 169},
+  62  		},
+
+src/egoDB/ioselector/io_selector_test.go:
+  145  		{
+  146: 			"many-bytes", fields{selector: selector}, args{b: []byte("egoDB"), offset: 0}, 7, false,
+  147  		},
+
+  154  		{
+  155: 			"EOF-error", fields{selector: selector}, args{b: []byte("egoDB"), offset: -1}, 0, true,
+  156  		},
+
+  196  		[]byte("1"),
+  197: 		[]byte("egoDB"),
+  198  	}
+
+  250  		[]byte("1"),
+  251: 		[]byte("egoDB"),
+  252  	}
+
+src/egoDB/ioselector/mmap.go:
+  6  
+  7: 	"github.com/flower-corp/egoDB/mmap"
+  8  )
+
+src/egoDB/logfile/log_entry_test.go:
+   27  		{
+   28: 			"with-key-value", args{e: &LogEntry{Key: []byte("kv"), Value: []byte("egoDB"), ExpiredAt: 443434211}}, []byte{101, 208, 223, 156, 0, 4, 14, 198, 147, 242, 166, 3, 107, 118, 108, 111, 116, 117, 115, 100, 98}, 21,
+   29  		},
+   30  		{
+   31: 			"type-delete", args{e: &LogEntry{Key: []byte("kv"), Value: []byte("egoDB"), ExpiredAt: 443434211, Type: TypeDelete}}, []byte{38, 27, 121, 27, 1, 4, 14, 198, 147, 242, 166, 3, 107, 118, 108, 111, 116, 117, 115, 100, 98}, 21,
+   32  		},
+
+   99  		{
+  100: 			"normal", args{e: &LogEntry{Key: []byte("kv"), Value: []byte("egoDB")}, h: []byte{0, 4, 14, 198, 147, 242, 166, 3}}, 2631913573,
+  101  		},
+
+src/egoDB/logfile/log_file_test.go:
+  103  		{
+  104: 			"normal-1", fields{lf: lf}, args{buf: []byte("egoDB")}, false,
+  105  		},
+
+  143  		[]byte("some data 3"),
+  144: 		[]byte("egoDB"),
+  145  	}
+
+  232  		{Key: []byte("k1"), Value: nil, ExpiredAt: 7844332343},
+  233: 		{Key: nil, Value: []byte("egoDB"), ExpiredAt: 99400542343},
+  234: 		{Key: []byte("k2"), Value: []byte("egoDB"), ExpiredAt: 8847333912},
+  235  		{Key: []byte("k3"), Value: []byte("some data"), ExpiredAt: 8847333912, Type: TypeDelete},
+
+  270  		{
+  271: 			"read-entry-0", fields{lf: lf}, args{offset: offsets[4]}, &LogEntry{Key: []byte{}, Value: []byte("egoDB"), ExpiredAt: 99400542343}, int64(len(vals[4])), false,
+  272  		},
+
+src/egoDB/logfile/log_file.go:
+  10  
+  11: 	"github.com/flower-corp/egoDB/ioselector"
+  12  )
+
+src/egoDB/mmap/mmap_test.go:
+  3  import (
+  4: 	"github.com/flower-corp/egoDB/logger"
+  5  	"github.com/stretchr/testify/assert"
+
+src/egoDB/util/file_test.go:
+  10  func TestPathExist(t *testing.T) {
+  11: 	path, err := filepath.Abs(filepath.Join("/tmp", "path", "egoDB-1"))
+  12  	assert.Nil(t, err)
+  13: 	path2, err := filepath.Abs(filepath.Join("/tmp", "path", "egoDB-2"))
+  14  	assert.Nil(t, err)
+
+  22  
+  23: 	existedFile, err := filepath.Abs(filepath.Join("/tmp", "path", "egoDB-file1"))
+  24  	assert.Nil(t, err)
+  25: 	noExistedFile, err := filepath.Abs(filepath.Join("/tmp", "path", "egoDB-file2"))
+  26  	assert.Nil(t, err)
+
+  90  func TestCopyFile(t *testing.T) {
+  91: 	path := filepath.Join("/tmp", "path", "egoDB-1")
+  92  	err := os.MkdirAll(path, os.ModePerm)
+
+src/egoDB/util/hash_test.go:
+  39  	for i := 0; i < 1000000; i++ {
+  40: 		v := MemHash([]byte("egoDB"))
+  41  		m[v] = struct{}{}
+
+  48  	// different groutines
+  49: 	key := []byte("egoDB")
+  50  	wg := sync.WaitGroup{}
+
+src/egoDB/vendor/go.etcd.io/bbolt/db.go:
+  230  	// changed in 2022.1.19(by roseduan)
+  231: 	// egoDB holds a file lock before opening boltdb, so it is no need to acquire the lock again, which will cause a timeout error.
+  232  
+
+  558  			// changed in 2022.1.19(by roseduan)
+  559: 			// egoDB holds a file lock before opening boltdb, so it is no need to acquire the lock again, which will cause a timeout error.
+  560  

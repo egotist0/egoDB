@@ -228,7 +228,7 @@ func Open(path string, mode os.FileMode, options *Options) (*DB, error) {
 	// hold a lock at the same time) otherwise (options.ReadOnly is set).
 
 	// changed in 2022.1.19(by roseduan)
-	// LotusDB holds a file lock before opening boltdb, so it is no need to acquire the lock again, which will cause a timeout error.
+	// egoDB holds a file lock before opening boltdb, so it is no need to acquire the lock again, which will cause a timeout error.
 
 	//if err := flock(db, !db.readOnly, options.Timeout); err != nil {
 	//	_ = db.close()
@@ -556,7 +556,7 @@ func (db *DB) close() error {
 			// Unlock the file.
 
 			// changed in 2022.1.19(by roseduan)
-			// LotusDB holds a file lock before opening boltdb, so it is no need to acquire the lock again, which will cause a timeout error.
+			// egoDB holds a file lock before opening boltdb, so it is no need to acquire the lock again, which will cause a timeout error.
 
 			//if err := funlock(db); err != nil {
 			//	log.Printf("bolt.Close(): funlock error: %s", err)

@@ -8,7 +8,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/flower-corp/lotusdb/ioselector"
+	"github.com/egotist0/egoDB/ioselector"
 )
 
 var (

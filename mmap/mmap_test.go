@@ -1,7 +1,7 @@
 package mmap
 
 import (
-	"github.com/flower-corp/lotusdb/logger"
+	"github.com/egotist0/egoDB/logger"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"

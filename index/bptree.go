@@ -1,7 +1,7 @@
 package index
 
 import (
-	"github.com/flower-corp/lotusdb/logger"
+	"github.com/egotist0/egoDB/logger"
 	"strings"
 	"time"
 

@@ -8,9 +8,9 @@ import (
 )
 
 func TestPathExist(t *testing.T) {
-	path, err := filepath.Abs(filepath.Join("/tmp", "path", "lotusdb-1"))
+	path, err := filepath.Abs(filepath.Join("/tmp", "path", "egoDB-1"))
 	assert.Nil(t, err)
-	path2, err := filepath.Abs(filepath.Join("/tmp", "path", "lotusdb-2"))
+	path2, err := filepath.Abs(filepath.Join("/tmp", "path", "egoDB-2"))
 	assert.Nil(t, err)
 
 	err = os.MkdirAll(path, os.ModePerm)
@@ -20,9 +20,9 @@ func TestPathExist(t *testing.T) {
 		assert.Nil(t, err)
 	}()
 
-	existedFile, err := filepath.Abs(filepath.Join("/tmp", "path", "lotusdb-file1"))
+	existedFile, err := filepath.Abs(filepath.Join("/tmp", "path", "egoDB-file1"))
 	assert.Nil(t, err)
-	noExistedFile, err := filepath.Abs(filepath.Join("/tmp", "path", "lotusdb-file2"))
+	noExistedFile, err := filepath.Abs(filepath.Join("/tmp", "path", "egoDB-file2"))
 	assert.Nil(t, err)
 	f, err := os.OpenFile(existedFile, os.O_CREATE, 0644)
 	assert.Nil(t, err)
@@ -88,7 +88,7 @@ func TestCopyDir(t *testing.T) {
 }
 
 func TestCopyFile(t *testing.T) {
-	path := filepath.Join("/tmp", "path", "lotusdb-1")
+	path := filepath.Join("/tmp", "path", "egoDB-1")
 	err := os.MkdirAll(path, os.ModePerm)
 	assert.Nil(t, err)
 	defer func() {

@@ -1,11 +1,11 @@
-package lotusdb
+package egoDB
 
 import (
 	"errors"
 	"os"
 	"sync"
 
-	"github.com/flower-corp/lotusdb/util"
+	"github.com/egotist0/egoDB/util"
 )
 
 var (
@@ -13,25 +13,25 @@ var (
 	ErrDefaultCfNil = errors.New("default column family is nil")
 )
 
-// LotusDB provide basic operations for a persistent kv store.
+// egoDB provide basic operations for a persistent kv store.
 // It`s methods(Put Get Delete) are self explanatory, and executed in default ColumnFamily.
 // You can create a custom ColumnFamily by calling method OpenColumnFamily.
-type LotusDB struct {
+type egoDB struct {
 	// all column families.
 	cfs  map[string]*ColumnFamily
 	opts Options
 	mu   sync.RWMutex
 }
 
-// Open a new LotusDB instance, actually will just open the default column family.
-func Open(opt Options) (*LotusDB, error) {
+// Open a new egoDB instance, actually will just open the default column family.
+func Open(opt Options) (*egoDB, error) {
 	if !util.PathExist(opt.DBPath) {
 		if err := os.MkdirAll(opt.DBPath, os.ModePerm); err != nil {
 			return nil, err
 		}
 	}
 
-	db := &LotusDB{opts: opt, cfs: make(map[string]*ColumnFamily)}
+	db := &egoDB{opts: opt, cfs: make(map[string]*ColumnFamily)}
 	// load default column family.
 	if opt.CfOpts.CfName == "" {
 		opt.CfOpts.CfName = DefaultColumnFamilyName
@@ -43,7 +43,7 @@ func Open(opt Options) (*LotusDB, error) {
 }
 
 // Close close database.
-func (db *LotusDB) Close() error {
+func (db *egoDB) Close() error {
 	for _, cf := range db.cfs {
 		if err := cf.Close(); err != nil {
 			return err
@@ -53,7 +53,7 @@ func (db *LotusDB) Close() error {
 }
 
 // Sync syncs the content of all column families to disk.
-func (db *LotusDB) Sync() error {
+func (db *egoDB) Sync() error {
 	for _, cf := range db.cfs {
 		if err := cf.Sync(); err != nil {
 			return err
@@ -63,12 +63,12 @@ func (db *LotusDB) Sync() error {
 }
 
 // Put put to default column family.
-func (db *LotusDB) Put(key, value []byte) error {
+func (db *egoDB) Put(key, value []byte) error {
 	return db.PutWithOptions(key, value, nil)
 }
 
 // PutWithOptions put to default column family with options.
-func (db *LotusDB) PutWithOptions(key, value []byte, opt *WriteOptions) error {
+func (db *egoDB) PutWithOptions(key, value []byte, opt *WriteOptions) error {
 	columnFamily := db.getColumnFamily(DefaultColumnFamilyName)
 	if columnFamily == nil {
 		return ErrDefaultCfNil
@@ -77,7 +77,7 @@ func (db *LotusDB) PutWithOptions(key, value []byte, opt *WriteOptions) error {
 }
 
 // Get get from default column family.
-func (db *LotusDB) Get(key []byte) ([]byte, error) {
+func (db *egoDB) Get(key []byte) ([]byte, error) {
 	columnFamily := db.getColumnFamily(DefaultColumnFamilyName)
 	if columnFamily == nil {
 		return nil, ErrDefaultCfNil
@@ -86,12 +86,12 @@ func (db *LotusDB) Get(key []byte) ([]byte, error) {
 }
 
 // Delete delete from default column family.
-func (db *LotusDB) Delete(key []byte) error {
+func (db *egoDB) Delete(key []byte) error {
 	return db.DeleteWithOptions(key, nil)
 }
 
 // DeleteWithOptions delete from default column family with options.
-func (db *LotusDB) DeleteWithOptions(key []byte, opt *WriteOptions) error {
+func (db *egoDB) DeleteWithOptions(key []byte, opt *WriteOptions) error {
 	columnFamily := db.getColumnFamily(DefaultColumnFamilyName)
 	if columnFamily == nil {
 		return ErrDefaultCfNil
@@ -99,7 +99,7 @@ func (db *LotusDB) DeleteWithOptions(key []byte, opt *WriteOptions) error {
 	return columnFamily.DeleteWithOptions(key, opt)
 }
 
-func (db *LotusDB) getColumnFamily(cfName string) *ColumnFamily {
+func (db *egoDB) getColumnFamily(cfName string) *ColumnFamily {
 	db.mu.RLock()
 	defer db.mu.RUnlock()
 	return db.cfs[cfName]

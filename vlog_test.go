@@ -1,8 +1,8 @@
-package lotusdb
+package egoDB
 
 import (
 	"bytes"
-	"github.com/flower-corp/lotusdb/logfile"
+	"github.com/egotist0/egoDB/logfile"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"math/rand"
@@ -134,13 +134,13 @@ func testValueLogWrite(t *testing.T, ioType logfile.IOType) {
 			"nil-entry", fields{vlog: vlog}, args{e: nil}, &valuePos{}, false,
 		},
 		{
-			"no-key", fields{vlog: vlog}, args{e: &logfile.LogEntry{Value: []byte("lotusdb")}}, &valuePos{Fid: 0, Offset: 0}, false,
+			"no-key", fields{vlog: vlog}, args{e: &logfile.LogEntry{Value: []byte("egoDB")}}, &valuePos{Fid: 0, Offset: 0}, false,
 		},
 		{
 			"no-value", fields{vlog: vlog}, args{e: &logfile.LogEntry{Key: []byte("key1")}}, &valuePos{Fid: 0, Offset: 15}, false,
 		},
 		{
-			"with-key-value", fields{vlog: vlog}, args{e: &logfile.LogEntry{Key: []byte("key2"), Value: []byte("lotusdb-2")}}, &valuePos{Fid: 0, Offset: 27}, false,
+			"with-key-value", fields{vlog: vlog}, args{e: &logfile.LogEntry{Key: []byte("key2"), Value: []byte("egoDB-2")}}, &valuePos{Fid: 0, Offset: 27}, false,
 		},
 		{
 			"key-big-value", fields{vlog: vlog}, args{e: &logfile.LogEntry{Key: []byte("key3"), Value: GetValue4K()}}, &valuePos{Fid: 0, Offset: 48}, false,
@@ -421,7 +421,7 @@ func openValueLogForTest(path string, blockSize int64, ioType logfile.IOType, gc
 }
 
 func TestValueLog_Compaction_Normal(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	opts.CfOpts.ValueLogFileSize = 16 * 1024 * 1024
 	opts.CfOpts.MemtableSize = 32 << 20
 	opts.CfOpts.ValueLogGCRatio = 0.5
@@ -462,7 +462,7 @@ func TestValueLog_Compaction_Normal(t *testing.T) {
 //}
 
 func testCompacction(t *testing.T, reading, writing bool) {
-	path, _ := ioutil.TempDir("", "lotusdb")
+	path, _ := ioutil.TempDir("", "egoDB")
 	opts := DefaultOptions(path)
 	opts.CfOpts.ValueLogFileSize = 16 * 1024 * 1024
 	opts.CfOpts.MemtableSize = 32 << 20

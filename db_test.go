@@ -1,9 +1,9 @@
-package lotusdb
+package egoDB
 
 import (
 	"bytes"
 	"fmt"
-	"github.com/flower-corp/lotusdb/logger"
+	"github.com/egotist0/egoDB/logger"
 	"math/rand"
 	"os"
 	"reflect"
@@ -20,7 +20,7 @@ func TestOpen(t *testing.T) {
 		assert.Nil(t, err)
 	}
 
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	t.Run("default", func(t *testing.T) {
 		opendb(opts)
 	})
@@ -39,14 +39,14 @@ func TestOpen(t *testing.T) {
 	})
 }
 
-func TestLotusDB_Put(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+func TestegoDB_Put(t *testing.T) {
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	db, err := Open(opts)
 	assert.Nil(t, err)
 	defer destroyDB(db)
 
 	type fields struct {
-		db *LotusDB
+		db *egoDB
 	}
 	type args struct {
 		key   []byte
@@ -83,14 +83,14 @@ func TestLotusDB_Put(t *testing.T) {
 	}
 }
 
-func TestLotusDB_PutWithOptions(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+func TestegoDB_PutWithOptions(t *testing.T) {
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	db, err := Open(opts)
 	assert.Nil(t, err)
 	defer destroyDB(db)
 
 	type fields struct {
-		db *LotusDB
+		db *egoDB
 	}
 	type args struct {
 		key   []byte
@@ -128,8 +128,8 @@ func TestLotusDB_PutWithOptions(t *testing.T) {
 
 // We will put data until the active memtable is full and be flushed.
 // Then a new active memtable will be created.
-func TestLotusDB_PutUntilMemtableFlush(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+func TestegoDB_PutUntilMemtableFlush(t *testing.T) {
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	// if you change the default memtable size, change the writeCount too.
 	// make sure the written data size is greater than memtable size.
 	opts.CfOpts.MemtableSize = 64 << 20
@@ -152,8 +152,8 @@ func TestLotusDB_PutUntilMemtableFlush(t *testing.T) {
 	assert.Equal(t, len(v2), 128)
 }
 
-func TestLotusDB_Get(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+func TestegoDB_Get(t *testing.T) {
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	db, err := Open(opts)
 	assert.Nil(t, err)
 	defer destroyDB(db)
@@ -162,14 +162,14 @@ func TestLotusDB_Get(t *testing.T) {
 	for i := 0; i < 100; i++ {
 		err := db.Put(GetKey(i), GetValue16B())
 		if i == 43 {
-			err := db.Put(GetKey(i), []byte("lotusdb"))
+			err := db.Put(GetKey(i), []byte("egoDB"))
 			assert.Nil(t, err)
 		}
 		assert.Nil(t, err)
 	}
 
 	type fields struct {
-		db *LotusDB
+		db *egoDB
 	}
 	type args struct {
 		key []byte
@@ -206,12 +206,12 @@ func TestLotusDB_Get(t *testing.T) {
 	}
 }
 
-func TestLotusDB_GetKeyFromIndexerAndValFromVLog(t *testing.T) {
+func TestegoDB_GetKeyFromIndexerAndValFromVLog(t *testing.T) {
 	testGetKV(t)
 }
 
 func testGetKV(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	db, err := Open(opts)
 	assert.Nil(t, err)
 	defer destroyDB(db)
@@ -237,8 +237,8 @@ func testGetKV(t *testing.T) {
 	}
 }
 
-func TestLotusDB_Delete(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+func TestegoDB_Delete(t *testing.T) {
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	db, err := Open(opts)
 	assert.Nil(t, err)
 	defer destroyDB(db)
@@ -248,14 +248,14 @@ func TestLotusDB_Delete(t *testing.T) {
 	for i := 0; i <= writeCount; i++ {
 		err := db.Put(GetKey(i), GetValue16B())
 		if i == 32 {
-			err := db.Put(GetKey(i), []byte("lotusdb"))
+			err := db.Put(GetKey(i), []byte("egoDB"))
 			assert.Nil(t, err)
 		}
 		assert.Nil(t, err)
 	}
 
 	type fields struct {
-		db *LotusDB
+		db *egoDB
 	}
 	type args struct {
 		key []byte
@@ -298,8 +298,8 @@ func TestLotusDB_Delete(t *testing.T) {
 	}
 }
 
-func TestLotusDB_DeleteAfterFlush(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+func TestegoDB_DeleteAfterFlush(t *testing.T) {
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	db, err := Open(opts)
 	assert.Nil(t, err)
 	defer destroyDB(db)
@@ -309,14 +309,14 @@ func TestLotusDB_DeleteAfterFlush(t *testing.T) {
 	for i := 0; i <= writeCount; i++ {
 		err := db.Put(GetKey(i), GetValue128B())
 		if i == 32 {
-			err := db.Put(GetKey(i), []byte("lotusdb"))
+			err := db.Put(GetKey(i), []byte("egoDB"))
 			assert.Nil(t, err)
 		}
 		assert.Nil(t, err)
 	}
 
 	type fields struct {
-		db *LotusDB
+		db *egoDB
 	}
 	type args struct {
 		key []byte
@@ -352,8 +352,8 @@ func TestLotusDB_DeleteAfterFlush(t *testing.T) {
 	}
 }
 
-func TestLotusDB_SyncAndClose(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+func TestegoDB_SyncAndClose(t *testing.T) {
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	db, err := Open(opts)
 	assert.Nil(t, err)
 	defer destroyDB(db)
@@ -373,7 +373,7 @@ func TestLotusDB_SyncAndClose(t *testing.T) {
 
 // write some data and reopen it.
 func TestReOpenDB(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	db, err := Open(opts)
 	assert.Nil(t, err)
 	defer destroyDB(db)
@@ -403,7 +403,7 @@ func TestReOpenDB(t *testing.T) {
 }
 
 func TestBytesFlush(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	opts.CfOpts.WalBytesFlush = 200
 	db, err := Open(opts)
 	assert.Nil(t, err)
@@ -415,7 +415,7 @@ func TestBytesFlush(t *testing.T) {
 	}
 }
 
-func destroyDB(db *LotusDB) {
+func destroyDB(db *egoDB) {
 	if db != nil {
 		_ = db.Close()
 		if err := os.RemoveAll(db.opts.DBPath); err != nil {

@@ -1,4 +1,4 @@
-package lotusdb
+package egoDB
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -8,7 +8,7 @@ import (
 )
 
 func TestDiscard_listenUpdates(t *testing.T) {
-	opts := DefaultOptions("/tmp" + separator + "lotusdb")
+	opts := DefaultOptions("/tmp" + separator + "egoDB")
 	db, err := Open(opts)
 	assert.Nil(t, err)
 	defer destroyDB(db)
@@ -44,7 +44,7 @@ func TestDiscard_listenUpdates(t *testing.T) {
 
 func TestDiscard_newDiscard(t *testing.T) {
 	t.Run("init", func(t *testing.T) {
-		path := filepath.Join("/tmp", "lotusdb-discard")
+		path := filepath.Join("/tmp", "egoDB-discard")
 		os.MkdirAll(path, os.ModePerm)
 		defer os.RemoveAll(path)
 		dis, err := newDiscard(path, vlogDiscardName)
@@ -55,7 +55,7 @@ func TestDiscard_newDiscard(t *testing.T) {
 	})
 
 	t.Run("with-data", func(t *testing.T) {
-		path := filepath.Join("/tmp", "lotusdb-discard")
+		path := filepath.Join("/tmp", "egoDB-discard")
 		os.MkdirAll(path, os.ModePerm)
 		defer os.RemoveAll(path)
 		dis, err := newDiscard(path, vlogDiscardName)
@@ -78,7 +78,7 @@ func TestDiscard_newDiscard(t *testing.T) {
 }
 
 func TestDiscard_setTotal(t *testing.T) {
-	path := filepath.Join("/tmp", "lotusdb-discard")
+	path := filepath.Join("/tmp", "egoDB-discard")
 	os.MkdirAll(path, os.ModePerm)
 	defer os.RemoveAll(path)
 	dis, err := newDiscard(path, vlogDiscardName)
@@ -114,7 +114,7 @@ func TestDiscard_setTotal(t *testing.T) {
 }
 
 func TestDiscard_clear(t *testing.T) {
-	path := filepath.Join("/tmp", "lotusdb-discard")
+	path := filepath.Join("/tmp", "egoDB-discard")
 	os.MkdirAll(path, os.ModePerm)
 	defer os.RemoveAll(path)
 	dis, err := newDiscard(path, vlogDiscardName)
@@ -154,7 +154,7 @@ func TestDiscard_clear(t *testing.T) {
 }
 
 func TestDiscard_incrDiscard(t *testing.T) {
-	path := filepath.Join("/tmp", "lotusdb-discard")
+	path := filepath.Join("/tmp", "egoDB-discard")
 	os.MkdirAll(path, os.ModePerm)
 	defer os.RemoveAll(path)
 	dis, err := newDiscard(path, vlogDiscardName)
@@ -173,7 +173,7 @@ func TestDiscard_incrDiscard(t *testing.T) {
 }
 
 func TestDiscard_getCCL(t *testing.T) {
-	path := filepath.Join("/tmp", "lotusdb-discard")
+	path := filepath.Join("/tmp", "egoDB-discard")
 	os.MkdirAll(path, os.ModePerm)
 	defer os.RemoveAll(path)
 	dis, err := newDiscard(path, vlogDiscardName)

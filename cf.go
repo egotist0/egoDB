@@ -1,9 +1,9 @@
-package lotusdb
+package egoDB
 
 import (
 	"errors"
 	"fmt"
-	"github.com/flower-corp/lotusdb/flock"
+	"github.com/egotist0/egoDB/flock"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -14,9 +14,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/flower-corp/lotusdb/index"
-	"github.com/flower-corp/lotusdb/logfile"
-	"github.com/flower-corp/lotusdb/util"
+	"github.com/egotist0/egoDB/index"
+	"github.com/egotist0/egoDB/logfile"
+	"github.com/egotist0/egoDB/util"
 )
 
 var (
@@ -34,7 +34,7 @@ var (
 )
 
 // ColumnFamily is a namespace of keys and values.
-// Each key/value pair in LotusDB is associated with exactly one Column Family.
+// Each key/value pair in egoDB is associated with exactly one Column Family.
 // If no Column Family is specified, key-value pair is associated with Column Family "cf_default".
 // Column Families provide a way to logically partition the database.
 type ColumnFamily struct {
@@ -67,7 +67,7 @@ type Stat struct {
 }
 
 // OpenColumnFamily open a new or existed column family.
-func (db *LotusDB) OpenColumnFamily(opts ColumnFamilyOptions) (*ColumnFamily, error) {
+func (db *egoDB) OpenColumnFamily(opts ColumnFamilyOptions) (*ColumnFamily, error) {
 	if opts.CfName == "" {
 		return nil, ErrColoumnFamilyNil
 	}

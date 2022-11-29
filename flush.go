@@ -1,4 +1,4 @@
-package lotusdb
+package egoDB
 
 import (
 	"os"
@@ -6,9 +6,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/flower-corp/lotusdb/index"
-	"github.com/flower-corp/lotusdb/logfile"
-	"github.com/flower-corp/lotusdb/logger"
+	"github.com/egotist0/egoDB/index"
+	"github.com/egotist0/egoDB/logfile"
+	"github.com/egotist0/egoDB/logger"
 )
 
 func (cf *ColumnFamily) waitWritesMemSpace(size uint32) error {

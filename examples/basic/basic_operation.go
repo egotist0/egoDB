@@ -1,21 +1,21 @@
 package main
 
 import (
-	"github.com/flower-corp/lotusdb"
+	"github.com/egotist0/egoDB"
 	"io/ioutil"
 	"time"
 )
 
-// basic operations for LotusDB:
+// basic operations for egoDB:
 // put
 // put with options
 // get
 // delete
 // delete with options
 func main() {
-	path, _ := ioutil.TempDir("", "lotusdb")
-	opts := lotusdb.DefaultOptions(path)
-	db, err := lotusdb.Open(opts)
+	path, _ := ioutil.TempDir("", "egoDB")
+	opts := egoDB.DefaultOptions(path)
+	db, err := egoDB.Open(opts)
 	if err != nil {
 		panic(err)
 	}
@@ -23,14 +23,14 @@ func main() {
 
 	// 1.----put----
 	key1 := []byte("name")
-	err = db.Put(key1, []byte("lotusdb"))
+	err = db.Put(key1, []byte("egoDB"))
 	if err != nil {
 		// ...
 	}
 
 	key2 := []byte("feature")
 	// 2.----put with options----
-	writeOpts := &lotusdb.WriteOptions{
+	writeOpts := &egoDB.WriteOptions{
 		Sync:      true,
 		ExpiredAt: time.Now().Add(time.Second * 100).Unix(),
 	}
@@ -55,7 +55,7 @@ func main() {
 	}
 
 	// 5.----delete with options----
-	deleteOpts := &lotusdb.WriteOptions{
+	deleteOpts := &egoDB.WriteOptions{
 		Sync:       false,
 		DisableWal: true,
 	}

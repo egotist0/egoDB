@@ -1,4 +1,4 @@
-module github.com/flower-corp/lotusdb
+module github.com/egotist0/egoDB
 
 go 1.16
 
@@ -10,4 +10,4 @@ require (
 	golang.org/x/sys v0.0.0-20211210111614-af8b64212486
 )
 
-replace go.etcd.io/bbolt => github.com/flower-corp/bbolt v1.3.7-0.20220315040627-32fed02add8f
+replace go.etcd.io/bbolt => github.com/egotist0/bbolt v1.3.7-0.20220315040627-32fed02add8f

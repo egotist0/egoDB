@@ -37,7 +37,7 @@ func TestMemHash(t *testing.T) {
 func TestMemHash2(t *testing.T) {
 	m := make(map[uint64]struct{})
 	for i := 0; i < 1000000; i++ {
-		v := MemHash([]byte("lotusdb"))
+		v := MemHash([]byte("egoDB"))
 		m[v] = struct{}{}
 	}
 	// all hash values should be the same in one process.
@@ -46,7 +46,7 @@ func TestMemHash2(t *testing.T) {
 
 func TestMemHash3(t *testing.T) {
 	// different groutines
-	key := []byte("lotusdb")
+	key := []byte("egoDB")
 	wg := sync.WaitGroup{}
 	wg.Add(2)
 

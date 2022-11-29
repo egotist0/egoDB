@@ -27,7 +27,7 @@ func TestEncodeMeta(t *testing.T) {
 			"1", args{m: &IndexerMeta{Value: []byte("1"), Fid: 0, Offset: 0, EntrySize: 10}}, []byte{0, 0, 20, 49},
 		},
 		{
-			"many", args{m: &IndexerMeta{Value: []byte("lotusdb"), Fid: 0, Offset: 0, EntrySize: 169}}, []byte{0, 0, 210, 2, 108, 111, 116, 117, 115, 100, 98},
+			"many", args{m: &IndexerMeta{Value: []byte("egoDB"), Fid: 0, Offset: 0, EntrySize: 169}}, []byte{0, 0, 210, 2, 108, 111, 116, 117, 115, 100, 98},
 		},
 	}
 	for _, tt := range tests {
@@ -58,7 +58,7 @@ func TestDecodeMeta(t *testing.T) {
 			"1", args{buf: []byte{0, 0, 20, 49}}, &IndexerMeta{Value: []byte("1"), Fid: 0, Offset: 0, EntrySize: 10},
 		},
 		{
-			"many", args{buf: []byte{0, 0, 210, 2, 108, 111, 116, 117, 115, 100, 98}}, &IndexerMeta{Value: []byte("lotusdb"), Fid: 0, Offset: 0, EntrySize: 169},
+			"many", args{buf: []byte{0, 0, 210, 2, 108, 111, 116, 117, 115, 100, 98}}, &IndexerMeta{Value: []byte("egoDB"), Fid: 0, Offset: 0, EntrySize: 169},
 		},
 	}
 	for _, tt := range tests {

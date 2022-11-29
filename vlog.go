@@ -1,11 +1,11 @@
-package lotusdb
+package egoDB
 
 import (
 	"errors"
 	"fmt"
-	"github.com/flower-corp/lotusdb/index"
-	"github.com/flower-corp/lotusdb/logfile"
-	"github.com/flower-corp/lotusdb/logger"
+	"github.com/egotist0/egoDB/index"
+	"github.com/egotist0/egoDB/logfile"
+	"github.com/egotist0/egoDB/logger"
 	"io"
 	"io/ioutil"
 	"os"

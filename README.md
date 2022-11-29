@@ -3,7 +3,7 @@ egoDB is a fast k/v database compatible with LSM tree and B+ tree.
 Key features:
 
 * **Combine the advantages of LSM and B+ tree**
-
+* **Get rid of the redundancy of SSTable**
 * **Fast read/write performance**
 * **Much lower read and space amplification than typical LSM**
 
@@ -14,11 +14,7 @@ egoDB is inspired by a paper named [SLM-DB](https://www.usenix.org/conference/fa
 
 ## Quick Start
 
-**1. embedded usage:** see [examples](examples).
-
-## Documentation
-
-see [wiki](https://github.com/egotist0/egoDB/tree/master/wikiegoDB-wiki).
+**embedded usage:** see [examples](examples).
 
 
 ## License

@@ -10,7 +10,7 @@ Key features:
 ## Design Overview
 egoDB is inspired by a paper named [SLM-DB](https://www.usenix.org/conference/fast19/presentation/kaiyrakhmet) in USENIX FAST ’19, and the [Wisckey](https://www.usenix.org/system/files/conference/fast16/fast16-papers-lu.pdf) paper also helps a lot.
 
-![](https://github.com/egotist0/egoDB/tree/master/resource/img/design-overview.png)
+![](resource/img/design-overview.png)
 
 ## Quick Start
 

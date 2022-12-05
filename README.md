@@ -2,7 +2,7 @@ egoDB is a fast k/v database compatible with LSM tree and B+ tree.
 
 Key features:
 
-* **Implementing LLVR for CodeGen to optimize query execution(to be finished)
+* **Implementing LLVR for CodeGen to optimize query execution(to be finished)**
 * **Merging the LSM and B+ tree for high read/write performance**
 * **Get rid of the redundancy of SSTable**
 * **Much lower read and space amplification than typical LSM**
